@@ -151,6 +151,27 @@ def create_app(test_config=None):
   only question that include that string within their question. 
   Try using the word "title" to start. 
   '''
+  @app.route('/questions/search', methods=['POST'])
+  def search_questions():
+    body = request.get_json()
+    search_term = body.get('searchTerm')
+
+    if not search_term:
+      abort(400)
+
+    selection = Question.query.filter(Question.question.ilike('%{}%'.format(search_term))).all()
+
+    if len(selection) == 0:
+      abort(404)
+
+    current_questions = paginate_questions(request, selection)
+
+    return jsonify({
+      'success': True,
+      'questions': current_questions,
+      'current_category': None
+    })
+    
 
   '''
   @TODO: 
@@ -160,6 +181,17 @@ def create_app(test_config=None):
   categories in the left column will cause only questions of that 
   category to be shown. 
   '''
+  @app.route('/categories/<int:category_id>/questions', methods=['GET'])
+  def get_questions_by_category(category_id):
+    current_category = Category.query.get(category_id)
+    selection = Question.query.filter(Question.category == category_id).all()
+    current_questions = paginate_questions(request, selection)
+
+    return jsonify({
+  		'success':True,
+  		'questions': current_questions,
+  		'total_questions': len(selection),
+  		})
 
 
   '''
@@ -173,6 +205,14 @@ def create_app(test_config=None):
   one question at a time is displayed, the user is allowed to answer
   and shown whether they were correct or not. 
   '''
+  @app.route('/quizzes', methods=['POST'])
+  def get_next_question():
+    #take category, use as filter and create selection of questions
+    #other filter should be no previous questions
+    #body = request.g
+
+    #get random question from selection and display
+    #add to previous questions
 
   '''
   @TODO: 
