@@ -205,15 +205,25 @@ def create_app(test_config=None):
   one question at a time is displayed, the user is allowed to answer
   and shown whether they were correct or not. 
   '''
+    
+  
   @app.route('/quizzes', methods=['POST'])
   def get_next_question():
     #take category, use as filter and create selection of questions
     #other filter should be no previous questions
-    #body = request.g
+    body = request.get_json()
+    quiz_category = body['quiz_category']['id']
+    previous_questions = body.get("previous_questions")
+    selection = Question.query.filter(Question.category == quiz_category, 
+    Question.id.notin_(previous_questions)).all()
 
     #get random question from selection and display
-    #add to previous questions
-
+    next_question = random.choice(selection).format()
+    return jsonify({
+      'success': True,
+      'question': next_question
+    })
+    
   '''
   @TODO: 
   Create error handlers for all expected errors 
