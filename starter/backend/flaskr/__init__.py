@@ -67,9 +67,17 @@ def create_app(test_config=None):
   @app.route('/questions', methods=['GET'])
   def retrieve_questions():
     selection = Question.query.order_by(Question.id).all()
+  
+    if len(selection) == 0:
+      abort(404)
+
     current_questions = paginate_questions(request, selection)
+
     categories = Category.query.all()
     formatted_categories = {category.id: category.type for category in categories}
+    
+    if len(categories) == 0:
+      abort(404)
 
     return jsonify({
   		'success':True,
@@ -131,6 +139,9 @@ def create_app(test_config=None):
       question.insert()
 
       selection = Question.query.all()
+      if len(selection) == 0:
+        abort(404)
+
       current_questions = paginate_questions(request, selection)
 
       return jsonify({
@@ -214,7 +225,10 @@ def create_app(test_config=None):
     body = request.get_json()
     quiz_category = body['quiz_category']['id']
     previous_questions = body.get("previous_questions")
-    selection = Question.query.filter(Question.category == quiz_category, 
+    if quiz_category == 0:
+      selection = Question.query.filter(Question.id.notin_(previous_questions)).all()
+    else:
+      selection = Question.query.filter(Question.category == quiz_category, 
     Question.id.notin_(previous_questions)).all()
 
     #get random question from selection and display
