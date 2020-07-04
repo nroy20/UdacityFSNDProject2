@@ -108,6 +108,7 @@ def create_app(test_config=None):
 
     return jsonify({
       'success': True,
+      'deleted_id': question_id
       }), 200
 
   '''
