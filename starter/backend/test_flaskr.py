@@ -69,13 +69,23 @@ class TriviaTestCase(unittest.TestCase):
         self.assertFalse(data['current_category'])
         self.assertFalse(data['total_questions'] == 0)
 
+    def test_add_question_422(self):
+        res = self.client().post('/questions', json={
+            'question': 0,
+            'answer': 0,
+            'category': 0,
+            'difficulty': 0
+        })
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 422)
+        self.assertFalse(data['success'])
+        self.assertEqual(data['error'], 422)
+        self.assertEqual(data['message'], "unprocessable")
+
     def test_delete_question(self):
         added_res = self.client().post('/questions', json=self.new_question)
         initial_data = json.loads(added_res.data)
-
-        self.assertEqual(added_res.status_code, 200)
-        self.assertTrue(initial_data['success'])
-        self.assertTrue(initial_data['question_id'])
 
         question_id = str(initial_data['question_id'])
         res = self.client().delete("/questions/{}".format(question_id))

@@ -231,8 +231,12 @@ def create_app(test_config=None):
       selection = Question.query.filter(Question.category == quiz_category, 
     Question.id.notin_(previous_questions)).all()
 
+    if len(selection) == 0:
+      abort(404)
+
     #get random question from selection and display
     next_question = random.choice(selection).format()
+
     return jsonify({
       'success': True,
       'question': next_question
