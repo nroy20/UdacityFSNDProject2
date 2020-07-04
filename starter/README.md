@@ -43,33 +43,3 @@ Pay special attention to what data the frontend is expecting from each API respo
 
 [View the README.md within ./frontend for more details.](./frontend/README.md)
 
-## Endpoints
-
-# /categories (GET)
-
-Handles GET requests for all available categories.
-
-# /questions (GET)
-
-Handles GET requests for questions and paginates them, returning a list of questions, number of total questions, current category, and categories. 
-
-# /questions/<int:question_id> (DELETE)
-
-Deletes question using a question ID.
-
-# /questions (POST)
-
-Posts a new question using the question and answer text, category, and difficulty score.
-
-# /questions/search (POST)
-
-Gets questions based on a search term. Returns questions for whom the search term is a substring of the question.
-
-# /categories/<int:category_id>/questions (GET)
-
-Gets questions based on category id.
-
-# /quizzes (POST)
-
-Takes category and previous question parameters and return a random questions within the given category, if provided, and that is not one of the previous questions
-

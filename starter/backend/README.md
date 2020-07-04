@@ -71,10 +71,6 @@ REVIEW_COMMENT
 This README is missing documentation of your endpoints. Below is an example for your endpoint to get all categories. Please use it as a reference for creating your documentation and resubmit your code. 
 
 Endpoints
-GET '/categories'
-GET ...
-POST ...
-DELETE ...
 
 GET '/categories'
 - Fetches a dictionary of categories in which the keys are the ids and the value is the corresponding string of the category
@@ -86,6 +82,118 @@ GET '/categories'
 '4' : "History",
 '5' : "Entertainment",
 '6' : "Sports"}
+
+GET '/questions'
+- Handles GET requests for questions and paginates them, producing a list of questions, number of total questions, current category, and categories. 
+- Request Arguments: None
+- Returns: Success value, list of questions, number of questions, list of categories, and current category.
+{
+  "categories": {
+    "1": "Science", 
+    "2": "Art", 
+    "3": "Geography", 
+    "4": "History", 
+    "5": "Entertainment", 
+    "6": "Sports"
+  }, 
+  "current_category": null, 
+  "questions": [
+    {
+      "answer": "Apollo 13", 
+      "category": 5, 
+      "difficulty": 4, 
+      "id": 2, 
+      "question": "What movie earned Tom Hanks his third straight Oscar nomination, in 1996?"
+    }, 
+    {
+      "answer": "Tom Cruise", 
+      "category": 5, 
+      "difficulty": 4, 
+      "id": 4, 
+      "question": "What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?"
+    }, 
+    {
+      "answer": "Maya Angelou", 
+      "category": 4, 
+      "difficulty": 2, 
+      "id": 5, 
+      "question": "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?"
+    }
+  ], 
+  "success": true, 
+  "total_questions": 16
+}
+
+DELETE '/questions/<int:question_id>'
+- Deletes question using a question ID.
+- Request Arguments: None
+- Returns: Success value and id of deleted question
+{
+  "success": true,
+  "deleted_id": 3
+}
+
+POST '/questions'
+- Posts a new question using the question and answer text, category, and difficulty score.
+- Request Arguments: question, answer, category, and difficulty 
+- Returns: Success value, id of new question, current category, and number of questions.
+{
+  "success": true,
+  "question_id": 12,
+  "current_category": null,
+  "total_questions": 12
+}
+
+POST '/questions/search'
+- Gets questions based on a search term. Returns questions for whom the search term is a substring of the question.
+- Request Arguments: searchTerm
+- Returns: Success value, list of questions containing the search term, and current category. 
+{
+  "current_category": null,
+  "questions": [
+    {
+      "answer": "Apollo 13", 
+      "category": 5, 
+      "difficulty": 4, 
+      "id": 2, 
+      "question": "What movie earned Tom Hanks his third straight Oscar nomination, in 1996?"
+    }
+  ], 
+  success: true, 
+}
+
+GET '/categories/<int:category_id>/questions'
+- Gets questions based on category id.
+- Request Arguments: None
+- Returns: Success value, list of questions in the given category, and number of questions.
+{
+  "questions": [
+    {
+      "answer": "Uruguay", 
+      "category": 6, 
+      "difficulty": 4, 
+      "id": 11, 
+      "question": "Which country won the first ever soccer World Cup in 1930?"
+    }
+  ], 
+  "success": true, 
+  "total_questions": 1
+}
+
+POST '/quizzes'
+- Takes category and previous question parameters and return a random questions within the given category, if provided, and that is not one of the previous questions
+- Request Arguments: quiz_category id (optional), previous_questions
+- Returns: Success value and next question (if it exists)
+{
+  "success": true,
+  "question": {
+      "answer": "Mona Lisa", 
+      "category": 2, 
+      "difficulty": 3, 
+      "id": 17, 
+      "question": "La Giaconda is better known as what?"
+    }
+}
 
 ```
 
