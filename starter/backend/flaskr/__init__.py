@@ -107,7 +107,7 @@ def create_app(test_config=None):
     to_delete.delete()
 
     return jsonify({
-      'success': True
+      'success': True,
       }), 200
 
   '''
@@ -232,7 +232,9 @@ def create_app(test_config=None):
     Question.id.notin_(previous_questions)).all()
 
     if len(selection) == 0:
-      abort(404)
+      return jsonify({
+        'success': True
+      })
 
     #get random question from selection and display
     next_question = random.choice(selection).format()
